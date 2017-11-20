@@ -1,0 +1,14 @@
+2b256088b49a4a2514a1f45830300fb0 *DESCRIPTION
+14d9a63ee481f4d5ffd6c7e6bb0c475f *NAMESPACE
+8ce1b0a2938d156bb35134551a9bfaa7 *R/ccp.R
+b96aa118954b8719b06020f5e49c9d07 *R/hum.R
+577b39d739a321305afbab06c412f2c0 *R/idi.R
+0308f68b0ca43e5c8a18ce0174ac1e76 *R/nri.R
+bb8fa0f5c4b5433bcbb6a363fc6d9b87 *R/pdi.R
+318699356f6a239b8849078988c592f9 *R/rsq.R
+28d71fa4511febca0745b3bc949aca9c *man/ccp.Rd
+9ba4c2d061ce481c6185c5c0a3c9cb41 *man/hum.Rd
+281ce647fbef9025fbab065fca1aeeb8 *man/idi.Rd
+f4d126fa2ca600ad0a11a10a8d45a1d4 *man/nri.Rd
+3c679a879dc048fadda0e006a0e61fa1 *man/pdi.Rd
+f59a82e0fdf282ffb5ffcabb4d841be0 *man/rsq.Rd
