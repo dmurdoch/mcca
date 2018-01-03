@@ -1,11 +1,11 @@
-\name{ccp}
-\alias{ccp}
-\title{Calculate CCP Value}
+\name{ccr}
+\alias{ccr}
+\title{Calculate CCR Value}
 \usage{
-ccp(y, d, method="multinom", k=3, \dots)
+ccr(y, d, method="multinom", k=3, \dots)
 }
 \description{
-compute the Correct Classification Percentage (CCP) value of two or three or four categories classifiers with an option to define the specific model or user-defined model.
+compute the Correct Classification Rate (CCR) value of two or three or four categories classifiers with an option to define the specific model or user-defined model.
 }
 \arguments{
   \item{y}{The multinomial response vector with two or three or four categories. It can be factor or integral and should be encoded from 1.}
@@ -15,11 +15,11 @@ compute the Correct Classification Percentage (CCP) value of two or three or fou
   \item{\dots}{additional arguments in the chosen method's function.}
 }
 \details{
-The function returns the CCP value for predictive markers based on a user-chosen machine learning method. Currently available methods include logistic regression (default), tree, lda, svm and user-computed risk values. This function is general since we can evaluate the accuracy for marker combinations resulted from complicated classification algorithms.
+The function returns the ccr value for predictive markers based on a user-chosen machine learning method. Currently available methods include logistic regression (default), tree, lda, svm and user-computed risk values. This function is general since we can evaluate the accuracy for marker combinations resulted from complicated classification algorithms.
 
 }
 \value{
-The CCP value of the classification using a particular learning method on a set of marker(s).
+The ccr value of the classification using a particular learning method on a set of marker(s).
 }
 \references{
 Li, J., Jiang, B. and Fine, J. P. (2013). Multicategory reclassification statistics for assessing Improvements in diagnostic accuracy. Biostatistics. 14(2): 382—394.
@@ -42,18 +42,18 @@ rm(list=ls())
 str(iris)
 data <- iris[, 1:4]
 label <- iris[, 5]
-ccp(y = label, d = data, method = "multinom", k = 3,maxit = 1000,MaxNWts = 2000,trace=FALSE)
+ccr(y = label, d = data, method = "multinom", k = 3,maxit = 1000,MaxNWts = 2000,trace=FALSE)
 ## [1] 0.9866667
-ccp(y = label, d = data, method = "multinom", k = 3)
+ccr(y = label, d = data, method = "multinom", k = 3)
 ## [1] 0.9866667
-ccp(y = label, d = data, method = "svm", k = 3)
+ccr(y = label, d = data, method = "svm", k = 3)
 ## [1] 0.9733333
-ccp(y = label, d = data, method = "svm", k = 3,kernel="sigmoid",cost=4,scale=TRUE,coef0=0.5)
+ccr(y = label, d = data, method = "svm", k = 3,kernel="sigmoid",cost=4,scale=TRUE,coef0=0.5)
 ## [1] 0.8333333
-ccp(y = label, d = data, method = "tree", k = 3)
+ccr(y = label, d = data, method = "tree", k = 3)
 ## [1] 0.96
 p = as.numeric(label)
-ccp(y = label, d = p, method = "label", k = 3)
+ccr(y = label, d = p, method = "label", k = 3)
 ## [1] 1
 
 rm(list=ls())
@@ -67,7 +67,7 @@ data <- data.matrix(mtcars[, c(1)])
 mtcars$carb <- factor(mtcars$carb, labels = c(1, 2, 3, 4))
 label <- as.numeric(mtcars$carb)
 str(mtcars)
-ccp(y = label, d = data, method = "svm", k = 4,kernel="radial",cost=1,scale=TRUE)
-## [1] 0.3857143
+ccr(y = label, d = data, method = "svm", k = 4,kernel="radial",cost=1,scale=TRUE)
+## [1] 0.46875
 }
-\keyword{ CCP }
+\keyword{ CCR }

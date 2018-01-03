@@ -2,16 +2,17 @@
 \alias{pdi}
 \title{Calculate PDI Value}
 \usage{
-pdi(y, d, method="multinom", k=3)
+pdi(y, d, method="multinom", k=3, \dots)
 }
 \description{
-compute the Polytomous Discrimination Index (PDI) value of three or four categories classifiers with an option to define the specific model or user-defined model.
+compute the Polytomous Discrimination Index (PDI) value of two or three or four categories classifiers with an option to define the specific model or user-defined model.
 }
 \arguments{
-\item{y}{The multinomial response vector with three or four categories. It can be factor or numerical.}
+\item{y}{The multinomial response vector with two or three or four categories. It can be factor or integral and should be encoded from 1.}
   \item{d}{The set of candidate markers, including one or more columns. Can be a data frame or a matrix; if the method is "prob", then d should be the probablity matrix.}
   \item{method}{specifies what method is used to construct the classifier based on the marker set in d. Available option includes the following methods:"multinom": Multinomial Logistic Regression which is the default method, requiring R package nnet;"tree": Classification Tree method, requiring R package rpart;"svm": Support Vector Machine (C-classification and radial basis as default), requiring R package e1071;"lda": Linear Discriminant Analysis, requiring R package lda;"prob": d is a risk matrix resulted from any external classification algorithm obtained by the user.}
-  \item{k}{number of the categories, can be 3 or 4.}
+  \item{k}{number of the categories, can be 2 or 3 or 4.}
+  \item{\dots}{additional arguments in the chosen method's function.}
 }
 \details{
 The function returns the PDI value for predictive markers based on a user-chosen machine learning method. Currently available methods include logistic regression (default), tree, lda, svm and user-computed risk values. This function is general since we can evaluate the accuracy for marker combinations resulted from complicated classification algorithms.
@@ -31,15 +32,15 @@ categories. European Journal of Epidemiology 2012; 27: 761 C
 Li, J., Feng, Q., Fine, J.P., Pencina, M.J., Van Calster, B. (2017). Nonparametric estimation and inference for polytomous discrimination index. Statistical Methods in Medical Research. In Press.
 }
 \author{
-Gao Ming: gaoming960329@gmail.com
+Ming Gao: gaoming96@sjtu.edu.cn
 
-Li jialiang: stalj@nus.edu.sg
+jialiang Li: stalj@nus.edu.sg
 }
 \note{
-Users are advised to change the operating settings of various classifiers since it is well known that machine learning methods require extensive tuning. Currently only some common and intuitive options are set as default and they are by no means the optimal parameterization for a particular data analysis. A more flexible evaluation is to consider "method=prob" in which case the input d should be a matrix of membership probabilities with k columns and each row of d should sum to one.
+Users are advised to change the operating settings of various classifiers since it is well known that machine learning methods require extensive tuning. Currently only some common and intuitive options are set as default and they are by no means the optimal parameterization for a particular data analysis. Users can put machine learning methods' parameters after tuning. A more flexible evaluation is to consider "method=prob" in which case the input d should be a matrix of membership probabilities with k columns and each row of d should sum to one.
 }
 \seealso{
-hum
+\code{\link{hum}}
 }
 \examples{
 rm(list=ls())
@@ -50,7 +51,8 @@ pdi(y = label, d = data,method = "multinom", k = 3)
 ## [1] 0.9845333
 pdi(y = label, d = data,method = "tree", k = 3)
 ## [1] 0.9082667
-
+pdi(y = label, d = data,method = "tree", k = 3,control = rpart::rpart.control(minsplit = 200))
+## [1] 0
 
 data <- data.matrix(iris[, 3])
 label <- as.numeric(iris[, 5])
@@ -64,18 +66,5 @@ pp<- data.frame(predict.probs)
 head(pp)
 pdi(y = label, d = pp, method = "prob", k = 3)
 ## [1] 0.9845333
-
-rm(list=ls())
-table(mtcars$carb)
-for (i in (1:length(mtcars$carb))) {
-    if (mtcars$carb[i] == 3 | mtcars$carb[i] == 6 | mtcars$carb[i] == 8) {
-        mtcars$carb[i] <- 9
-    }
-}
-data <- data.matrix(mtcars[, c(1)])
-mtcars$carb <- factor(mtcars$carb, labels = c(1, 2, 3, 4))
-label <- as.numeric(mtcars$carb)
-str(mtcars)
-
 }
 \keyword{ PDI }

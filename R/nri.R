@@ -1,4 +1,4 @@
-nri=function(y,m1,m2,method="multinom",k=3){
+nri=function(y,m1,m2,method="multinom",k=3,...){
   num=k
   option=method
 
@@ -22,30 +22,30 @@ nri=function(y,m1,m2,method="multinom",k=3){
   #define the id
   if(option=="multinom"){
     #require(nnet)
-    fit <- nnet::multinom(y~m1,maxit = 1000,MaxNWts = 2000,trace=F)
+    fit <- nnet::multinom(y~m1,...)
     pvold=predict(fit,type='class')
-    fit <- nnet::multinom(y~m1+m2,maxit = 1000,MaxNWts = 2000,trace=F)
+    fit <- nnet::multinom(y~m1+m2,...)
     pv=predict(fit,type='class')
   }else if(option=="tree"){
     #require(rpart)
     y <- as.factor(y)
-    fit <- rpart::rpart(y~m1,control = rpart::rpart.control(minsplit = 4))
+    fit <- rpart::rpart(y~m1,...)
     pvold <- predict(fit,type="class")
-    fit <- rpart::rpart(y~m1+m2,control = rpart::rpart.control(minsplit = 4))
+    fit <- rpart::rpart(y~m1+m2,...)
     pv <- predict(fit,type="class")
   }else if(option=="svm"){
     #require(e1071)
     y <- as.factor(y)
-    fit <- e1071::svm(y~m1,type="C",kernel="radial",cost=1,scale=T)
+    fit <- e1071::svm(y~m1,...)
     pvold <- predict(fit)
-    fit <- e1071::svm(y~m1+m2,type="C",kernel="radial",cost=1,scale=T)
+    fit <- e1071::svm(y~m1+m2,...)
     pv <- predict(fit)
   }else if(option=="lda"){
     #require(MASS)
-    fit <- MASS::lda(y~m1)
+    fit <- MASS::lda(y~m1,...)
     predict.test.fit <- predict(fit)
     pvold <- predict.test.fit$class
-    fit <- MASS::lda(y~m1+m2)
+    fit <- MASS::lda(y~m1+m2,...)
     predict.test.fit <- predict(fit)
     pv <- predict.test.fit$class
 
@@ -82,30 +82,30 @@ nri=function(y,m1,m2,method="multinom",k=3){
     #define the id
     if(option=="multinom"){
       #require(nnet)
-      fit <- nnet::multinom(y~m1,maxit = 1000,MaxNWts = 2000,trace=F)
+      fit <- nnet::multinom(y~m1,...)
       pvold=predict(fit,type='class')
-      fit <- nnet::multinom(y~m1+m2,maxit = 1000,MaxNWts = 2000,trace=F)
+      fit <- nnet::multinom(y~m1+m2,...)
       pv=predict(fit,type='class')
     }else if(option=="tree"){
       #require(rpart)
       y <- as.factor(y)
-      fit <- rpart::rpart(y~m1)
+      fit <- rpart::rpart(y~m1,...)
       pvold <- predict(fit,type="class")
-      fit <- rpart::rpart(y~m1+m2)
+      fit <- rpart::rpart(y~m1+m2,...)
       pv <- predict(fit,type="class")
     }else if(option=="svm"){
       #require(e1071)
       y <- as.factor(y)
-      fit <- e1071::svm(y~m1,type="C",kernel="radial",cost=1,scale=T)
+      fit <- e1071::svm(y~m1,...)
       pvold <- predict(fit)
-      fit <- e1071::svm(y~m1+m2,type="C",kernel="radial",cost=1,scale=T)
+      fit <- e1071::svm(y~m1+m2,...)
       pv <- predict(fit)
     }else if(option=="lda"){
       #require(MASS)
-      fit <- MASS::lda(y~m1)
+      fit <- MASS::lda(y~m1,...)
       predict.test.fit <- predict(fit)
       pvold <- predict.test.fit$class
-      fit <- MASS::lda(y~m1+m2)
+      fit <- MASS::lda(y~m1+m2,...)
       predict.test.fit <- predict(fit)
       pv <- predict.test.fit$class
 
@@ -124,6 +124,66 @@ nri=function(y,m1,m2,method="multinom",k=3){
 
     return(nri)
 
+  }else if(num==2){
+
+    #y is the tri-nomial response, i.e., a single vector taking three distinct values, can be nominal or numerical
+    
+    y=as.numeric(y)
+    m1=m1
+    m2=m2
+    m1=data.matrix(m1)
+    m2=data.matrix(m2)
+    
+    n1=sum(y==1)
+    n2=sum(y==2)
+
+    nn=n1+n2
+    ro1=n1/nn
+    ro2=n2/nn
+
+    
+    #define the id
+    if(option=="multinom"){
+      #require(nnet)
+      fit <- nnet::multinom(y~m1,...)
+      pvold=predict(fit,type='class')
+      fit <- nnet::multinom(y~m1+m2,...)
+      pv=predict(fit,type='class')
+    }else if(option=="tree"){
+      #require(rpart)
+      y <- as.factor(y)
+      fit <- rpart::rpart(y~m1,...)
+      pvold <- predict(fit,type="class")
+      fit <- rpart::rpart(y~m1+m2,...)
+      pv <- predict(fit,type="class")
+    }else if(option=="svm"){
+      #require(e1071)
+      y <- as.factor(y)
+      fit <- e1071::svm(y~m1,...)
+      pvold <- predict(fit)
+      fit <- e1071::svm(y~m1+m2,...)
+      pv <- predict(fit)
+    }else if(option=="lda"){
+      #require(MASS)
+      fit <- MASS::lda(y~m1,...)
+      predict.test.fit <- predict(fit)
+      pvold <- predict.test.fit$class
+      fit <- MASS::lda(y~m1+m2,...)
+      predict.test.fit <- predict(fit)
+      pv <- predict.test.fit$class
+      
+      
+    }else if(option=="label"){
+      pvold=m1
+      pv=m2
+    }
+    
+    nri=(
+      (sum(pv==1 & y==1 & pvold!=1)-sum(pv!=1 & y==1 & pvold==1))/n1+
+        (sum(pv==2 & y==2 & pvold!=2)-sum(pv!=2 & y==2 & pvold==2))/n2
+    )/2
+    
+    return(nri)
   }
 }
 
