@@ -217,7 +217,7 @@ pdi=function(y,d,method="multinom",k=3,...){
     pdi2<-0
 
     for(i in 1:length(n1)){
-      pdi1=pdi1+sum(pv1[i,1]>pv2[,1])
+      pdi1=pdi1+sum(pv1[i,1]>pv2[,1])+sum(pv1[i,1]==pv2[,1])
     }
     for(i in 1:length(n2)){
       pdi2=pdi2+sum(pv2[i,2]>pv1[,2])

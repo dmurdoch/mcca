@@ -53,6 +53,9 @@ nri=function(y,m1,m2,method="multinom",k=3,...){
   }else if(option=="label"){
     pvold=m1
     pv=m2
+  }else if(option=="prob"){
+    pvold=max.col(m1)
+    pv=max.col(m2)
   }
 
   nri=(
@@ -113,6 +116,9 @@ nri=function(y,m1,m2,method="multinom",k=3,...){
     }else if(option=="label"){
       pvold=m1
       pv=m2
+    }else if(option=="prob"){
+      pvold=max.col(m1)
+      pv=max.col(m2)
     }
 
     nri=(
@@ -176,6 +182,9 @@ nri=function(y,m1,m2,method="multinom",k=3,...){
     }else if(option=="label"){
       pvold=m1
       pv=m2
+    }else if(option=="prob"){
+      pvold=max.col(m1)
+      pv=max.col(m2)
     }
     
     nri=(

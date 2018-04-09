@@ -15,8 +15,8 @@ risk values.
 \tabular{ll}{
 Package: \tab mcca\cr
 Type: \tab Package\cr
-Version: \tab 0.2\cr
-Date: \tab 2017-12-21\cr
+Version: \tab 0.3\cr
+Date: \tab 2018-03-28\cr
 License: \tab GPL\cr
 }
 
@@ -29,8 +29,9 @@ License: \tab GPL\cr
     \code{\link{nri}} \tab Calculate NRI Value \cr
     \code{\link{pdi}} \tab Calculate PDI Value \cr
     \code{\link{rsq}} \tab Calculate RSQ Value \cr
-    \code{\link{ccr}} \tab Calculate CCR Value \cr
     \code{\link{pm}} \tab Calculate Probability Matrix \cr
+    \code{\link{ests}} \tab Estimated Information for Single Model Evaluation Value \cr
+    \code{\link{estp}} \tab Estimated Information for Paired Model Evaluation Value \cr
 
   }
 }
@@ -109,6 +110,15 @@ hum(y = label, d = data,method = "svm", k = 3,kernel="linear",cost=4,scale=TRUE)
 ## [1] 0.9972
 hum(y = label, d = data, method = "tree", k = 3)
 ## [1] 0.998
+\donttest{ests(y = label, d = data,acc="hum",level=0.95,method = "multinom", k = 3,trace=FALSE)}
 
+## $value
+## [1] 0.9972
+
+## $sd
+## [1] 0.002051529
+
+## $interval
+## [1] 0.9935662 1.0000000
 }
 
