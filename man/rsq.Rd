@@ -22,7 +22,7 @@ The function returns the RSQ value for predictive markers based on a user-chosen
 The RSQ value of the classification using a particular learning method on a set of marker(s).
 }
 \references{
-Li, J., Jiang, B. and Fine, J. P. (2013). Multicategory reclassification statistics for assessing Improvements in diagnostic accuracy. Biostatistics. 14(2): 382—394.
+Li, J., Jiang, B. and Fine, J. P. (2013). Multicategory reclassification statistics for assessing Improvements in diagnostic accuracy. Biostatistics. 14(2): 382-394.
 
 Li, J., Jiang, B., and Fine, J. P. (2013). Letter to Editor: Response. Biostatistics. 14(4): 809-810.
 }

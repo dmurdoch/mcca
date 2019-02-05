@@ -187,7 +187,7 @@ hum=function(y,d,method="multinom",k=3,...){
     mt1=kronecker(kronecker(jd1[x1]%*%t(jd2[x2]),jd3[x3]),jd4[x4]);
     mt7=kronecker(kronecker(jd1[x1]%*%t(jd2[x2]),jd4[x3]),jd3[x4]);
     mt2=kronecker(kronecker(jd1[x1]%*%t(jd3[x2]),jd2[x3]),jd4[x4]);
-    mt8=kronecker(kronecker(jd1[x1]%*%t(jd3[x2]),jd4[x3]),jd3[x4]);
+    mt8=kronecker(kronecker(jd1[x1]%*%t(jd3[x2]),jd4[x3]),jd2[x4]);
     mt9=kronecker(kronecker(jd1[x1]%*%t(jd4[x2]),jd2[x3]),jd3[x4]);
     mt10=kronecker(kronecker(jd1[x1]%*%t(jd4[x2]),jd3[x3]),jd2[x4]);
     mt3=kronecker(kronecker(jd2[x1]%*%t(jd1[x2]),jd3[x3]),jd4[x4]);
@@ -219,7 +219,7 @@ hum=function(y,d,method="multinom",k=3,...){
   }else if(num==2){
       #y is the tri-nomial response, i.e., a single vector taking three distinct values, can be nominal or numerical
       #d is the continuous marker, turn out to be the probability matrix when option="prob"
-      
+
       #x1 is position of observations from the 1st category
       #x2 is position of observations from the 2nd category
       #x3 is position of observations from the 3rd category
@@ -228,7 +228,7 @@ hum=function(y,d,method="multinom",k=3,...){
       x1=which(y==1) #return the label
       x2=which(y==2)
       n=length(y)
-      
+
       #n is the sample size
       a=matrix(0,n,2);
       one1=a;
@@ -236,7 +236,7 @@ hum=function(y,d,method="multinom",k=3,...){
       one2=a;
       one2[,2]=1;
 
-      
+
       #define the id
       if(option=="multinom"){
         #require(nnet)
@@ -272,7 +272,7 @@ hum=function(y,d,method="multinom",k=3,...){
         predict.test.df <- data.frame(predict.test)
         #extract the probablity assessment vector
         pp=predict.test.df
-        
+
       }else if(option=="prob"){
         pp_sum <- apply(d,1,sum)
         a <- pp_sum<0.999 | pp_sum>1.001
@@ -283,10 +283,10 @@ hum=function(y,d,method="multinom",k=3,...){
         }
         pp=d
       }
-      
-      
-      
+
+
+
       return(as.numeric(pROC::roc(y ~ pp[,1])$auc))
       }
-    
+
 }

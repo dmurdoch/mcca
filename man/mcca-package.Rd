@@ -3,7 +3,7 @@
 \alias{mcca}
 \docType{package}
 \title{
-diagnostic accuracy methods for classifiers
+Diagnostic accuracy methods for classifiers
 }
 \description{
   Six common multi-category classification accuracy evaluation measures are included i.e., Correct Classification Percentage (CCP), Hypervolume Under Manifold (HUM), Integrated Discrimination Improvement (IDI), Net Reclassification Improvement (NRI), Polytomous Discrimination Index (PDI) and R-squared (RSQ). It allows users to fit many popular classification procedures, such
@@ -15,8 +15,8 @@ risk values.
 \tabular{ll}{
 Package: \tab mcca\cr
 Type: \tab Package\cr
-Version: \tab 0.3\cr
-Date: \tab 2018-03-28\cr
+Version: \tab 0.5\cr
+Date: \tab 2019-02-04\cr
 License: \tab GPL\cr
 }
 
@@ -50,17 +50,23 @@ License: \tab GPL\cr
   }
 }
 
+\section{Citation}{
+Li J, Gao M, D'Agostino R. Evaluating classification accuracy for modern learning
+approaches. Statistics in Medicine. 2019;1-27. https://doi.org/10.1002/sim.8103
+}
 \author{
 Ming Gao, Jialiang Li
 
-Maintainer: Ming Gao <gaoming96@sjtu.edu.cn>
+Maintainer: Ming Gao <gaoming@umich.edu>
 }
 \references{
+Li, Ming G., D'Agostino. (2019). Evaluating Classification Accuracy for Modern Learning Approaches. Statistics in Medicine.
+
 Li, J. and Fine, J. P. (2008): ROC analysis with multiple tests and multiple classes: methodology and applications in microarray studies. Biostatistics. 9 (3): 566-576.
 
 Li, J., Chow, Y., Wong, W.K., and Wong, T.Y. (2014). Sorting Multiple Classes in Multi-dimensional ROC Analysis: Parametric and Nonparametric Approaches. Biomarkers. 19(1): 1-8.
 
-Li, J., Jiang, B. and Fine, J. P. (2013). Multicategory reclassification statistics for assessing Improvements in diagnostic accuracy. Biostatistics. 14(2): 382—394.
+Li, J., Jiang, B. and Fine, J. P. (2013). Multicategory reclassification statistics for assessing Improvements in diagnostic accuracy. Biostatistics. 14(2): 382-394.
 
 Li, J., Jiang, B., and Fine, J. P. (2013). Letter to Editor: Response. Biostatistics. 14(4): 809-810.
 
@@ -71,6 +77,7 @@ categories. European Journal of Epidemiology 2012; 27: 761 C
 770.
 
 Li, J., Feng, Q., Fine, J.P., Pencina, M.J., Van Calster, B. (2017). Nonparametric estimation and inference for polytomous discrimination index. Statistical Methods in Medical Research. In Press.
+
 }
 
 \keyword{CCP}
