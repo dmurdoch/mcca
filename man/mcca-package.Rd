@@ -15,8 +15,8 @@ risk values.
 \tabular{ll}{
 Package: \tab mcca\cr
 Type: \tab Package\cr
-Version: \tab 0.5\cr
-Date: \tab 2019-02-04\cr
+Version: \tab 0.6\cr
+Date: \tab 2019-08-05\cr
 License: \tab GPL\cr
 }
 
@@ -25,6 +25,7 @@ License: \tab GPL\cr
   \tabular{ll}{
     \code{\link{ccp}} \tab Calculate CCP Value \cr
     \code{\link{hum}} \tab Calculate HUM Value \cr
+    \code{\link{plot.mcca.hum}} \tab Plot 3D ROC curve \cr
     \code{\link{idi}} \tab Calculate IDI Value \cr
     \code{\link{nri}} \tab Calculate NRI Value \cr
     \code{\link{pdi}} \tab Calculate PDI Value \cr
@@ -60,6 +61,8 @@ Ming Gao, Jialiang Li
 Maintainer: Ming Gao <gaoming@umich.edu>
 }
 \references{
+Li, J., Gao, M., D’Agostino, R. (2019). Evaluating Classification Accuracy for Modern Learning Approaches. Statistics in Medicine (Tutorials in Biostatistics). 38(13): 2477-2503.
+
 Li, Ming G., D'Agostino. (2019). Evaluating Classification Accuracy for Modern Learning Approaches. Statistics in Medicine.
 
 Li, J. and Fine, J. P. (2008): ROC analysis with multiple tests and multiple classes: methodology and applications in microarray studies. Biostatistics. 9 (3): 566-576.
@@ -76,7 +79,7 @@ discriminative ability of risk models for more than two outcome
 categories. European Journal of Epidemiology 2012; 27: 761 C
 770.
 
-Li, J., Feng, Q., Fine, J.P., Pencina, M.J., Van Calster, B. (2017). Nonparametric estimation and inference for polytomous discrimination index. Statistical Methods in Medical Research. In Press.
+Li, J., Feng, Q., Fine, J.P., Pencina, M.J., Van Calster, B. (2018). Nonparametric estimation and inference for polytomous discrimination index. Statistical Methods in Medical Research. 27(10): 3092—3103.
 
 }
 
@@ -92,32 +95,21 @@ CRAN packages \pkg{nnet}, \pkg{rpart}, \pkg{e1071},  \pkg{MASS} employed in this
 }
 \examples{
 
-rm(list=ls())
 str(iris)
 data <- iris[, 1:4]
 label <- iris[, 5]
-ccp(y = label, d = data, method = "multinom", k = 3,maxit = 1000,MaxNWts = 2000,trace=FALSE)
-## [1] 0.9866667
-ccp(y = label, d = data, method = "multinom", k = 3)
-## [1] 0.9866667
-ccp(y = label, d = data, method = "svm", k = 3)
-## [1] 0.9733333
-ccp(y = label, d = data, method = "svm", k = 3,kernel="sigmoid",cost=4,scale=TRUE,coef0=0.5)
-## [1] 0.8333333
-ccp(y = label, d = data, method = "tree", k = 3)
-## [1] 0.96
+ccp(y = label, d = data, method = "multinom",maxit = 1000,MaxNWts = 2000,trace=FALSE)
+ccp(y = label, d = data, method = "multinom")
+ccp(y = label, d = data, method = "svm")
+ccp(y = label, d = data, method = "svm",kernel="sigmoid",cost=4,scale=TRUE,coef0=0.5)
+ccp(y = label, d = data, method = "tree")
 p = as.numeric(label)
-ccp(y = label, d = p, method = "label", k = 3)
-## [1] 1
-hum(y = label, d = data,method = "multinom", k = 3)
-## [1] 0.9972
-hum(y = label, d = data,method = "svm", k = 3)
-## [1] 0.9964
-hum(y = label, d = data,method = "svm", k = 3,kernel="linear",cost=4,scale=TRUE)
-## [1] 0.9972
-hum(y = label, d = data, method = "tree", k = 3)
-## [1] 0.998
-\donttest{ests(y = label, d = data,acc="hum",level=0.95,method = "multinom", k = 3,trace=FALSE)}
+ccp(y = label, d = p, method = "label")
+hum(y = label, d = data,method = "multinom")
+hum(y = label, d = data,method = "svm")
+hum(y = label, d = data,method = "svm",kernel="linear",cost=4,scale=TRUE)
+hum(y = label, d = data, method = "tree")
+\donttest{ests(y = label, d = data,acc="hum",level=0.95,method = "multinom",trace=FALSE)}
 
 ## $value
 ## [1] 0.9972

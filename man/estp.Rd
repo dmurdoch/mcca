@@ -2,7 +2,7 @@
 \alias{estp}
 \title{Inference for Accuracy Improvement Measures based on Bootstrap}
 \usage{
-estp(y, m1, m2, acc="idi", level=0.95, method="multinom", k=3, B=250, balance=FALSE, \dots)
+estp(y, m1, m2, acc="idi", level=0.95, method="multinom", B=250, balance=FALSE, \dots)
 }
 \description{
 compute the bootstrap standard error and confidence interval for the classification accuracy improvement for a pair of nested models.
@@ -14,7 +14,6 @@ compute the bootstrap standard error and confidence interval for the classificat
   \item{acc}{Accuracy measure to be evaluated. Allow two choices: "idi", "nri".}
   \item{level}{The confidence level. Default value is 0.95.}
   \item{method}{Specifies what method is used to construct the classifier based on the marker set in m1 & m2. Available option includes the following methods:"multinom": Multinomial Logistic Regression which is the default method, requiring R package nnet;"tree": Classification Tree method, requiring R package rpart;"svm": Support Vector Machine (C-classification and radial basis as default), requiring R package e1071;"lda": Linear Discriminant Analysis, requiring R package lda;"prob": m1 & m2 are risk matrices resulted from any external classification algorithm obtained by the user.}
-  \item{k}{Number of the categories, can be 2, 3 or 4.}
   \item{B}{Number of bootstrap resamples.}
   \item{balance}{Logical, if TRUE, the class prevalence of the bootstrap sample is forced to be identical to the class prevalence of the original sample. Otherwise the prevalence of the bootstrap sample may be random.}
   \item{\dots}{Additional arguments in the chosen method's function.}
@@ -30,7 +29,7 @@ The function returns the standard error and confidence interval for a paired mod
 }
 
 \author{
-Ming Gao: gaoming96@sjtu.edu.cn
+Ming Gao: gaoming@umich.edu
 
 Jialiang Li: stalj@nus.edu.sg
 }
@@ -42,18 +41,19 @@ Users are advised to change the operating settings of various classifiers since 
 \code{\link{ests}}
 }
 \examples{
-rm(list=ls())
 table(mtcars$carb)
 for (i in (1:length(mtcars$carb))) {
   if (mtcars$carb[i] == 3 | mtcars$carb[i] == 6 | mtcars$carb[i] == 8) {
-    mtcars$carb[i] <- 9
+    mtcars$carb_new[i] = 9
+  }else{
+    mtcars$carb_new[i] = mtcars$carb[i]
   }
 }
-data <- data.matrix(mtcars[, c(1, 5)])
-mtcars$carb <- factor(mtcars$carb, labels = c(1, 2, 3, 4))
-label <- as.numeric(mtcars$carb)
+data <- data.matrix(mtcars[, c(1,2)])
+mtcars$carb_new <- factor(mtcars$carb_new)
+label <- mtcars$carb_new
 str(mtcars)
-estp(y = label, m1 = data[, 1], m2 = data[, 2], acc="idi",method="lda", k=4,B=10)
+estp(y = label, m1 = data[, 1], m2 = data[, 2], acc="idi",method="lda", B=10)
 
 ## $value
 ## [1] 0.1235644
@@ -64,7 +64,7 @@ estp(y = label, m1 = data[, 1], m2 = data[, 2], acc="idi",method="lda", k=4,B=10
 ## $interval
 ## [1] 0.05298885 0.21915088
 
-estp(y = label, m1 = data[, 1], m2 = data[, 2], acc="nri",method="tree", k=4,B=5)
+estp(y = label, m1 = data[, 1], m2 = data[, 2], acc="nri",method="tree",B=5)
 
 ## $value
 ## [1] 0.05

@@ -2,7 +2,7 @@
 \alias{hum}
 \title{Calculate HUM Value}
 \usage{
-hum(y, d, method="multinom", k=3, \dots)
+hum(y, d, method="multinom", \dots)
 }
 \description{
 compute the Hypervolume Under Manifold (HUM) value of two or three or four categories classifiers with an option to define the specific model or user-defined model.
@@ -11,7 +11,6 @@ compute the Hypervolume Under Manifold (HUM) value of two or three or four categ
   \item{y}{The multinomial response vector with two, three or four categories. It can be factor or integer-valued.}
   \item{d}{The set of candidate markers, including one or more columns. Can be a data frame or a matrix; if the method is "prob", then d should be the probablity matrix.}
   \item{method}{Specifies what method is used to construct the classifier based on the marker set in d. Available option includes the following methods:"multinom": Multinomial Logistic Regression which is the default method, requiring R package nnet;"tree": Classification Tree method, requiring R package rpart;"svm": Support Vector Machine (C-classification and radial basis as default), requiring R package e1071;"lda": Linear Discriminant Analysis, requiring R package lda;"prob": d is a risk matrix resulted from any external classification algorithm obtained by the user.}
-  \item{k}{Number of the categories, can be 2 or 3 or 4.}
   \item{\dots}{Additional arguments in the chosen method's function.}
 }
 \details{
@@ -22,12 +21,14 @@ The function returns the HUM value for predictive markers based on a user-chosen
 The HUM value of the classification using a particular learning method on a set of marker(s).
 }
 \references{
+Li, J., Gao, M., D’Agostino, R. (2019). Evaluating Classification Accuracy for Modern Learning Approaches. Statistics in Medicine (Tutorials in Biostatistics). 38(13): 2477-2503.
+
 Li, J. and Fine, J. P. (2008): ROC analysis with multiple tests and multiple classes: methodology and applications in microarray studies. Biostatistics. 9 (3): 566-576.
 
 Li, J., Chow, Y., Wong, W.K., and Wong, T.Y. (2014). Sorting Multiple Classes in Multi-dimensional ROC Analysis: Parametric and Nonparametric Approaches. Biomarkers. 19(1): 1-8.
 }
 \author{
-Ming Gao: gaoming96@sjtu.edu.cn
+Ming Gao: gaoming@umich.edu
 
 Jialiang Li: stalj@nus.edu.sg
 }
@@ -38,17 +39,16 @@ Users are advised to change the operating settings of various classifiers since 
 \code{\link{pdi}}
 }
 \examples{
-rm(list=ls())
 str(iris)
 data <- iris[, 1:4]
 label <- iris[, 5]
-hum(y = label, d = data,method = "multinom", k = 3)
+hum(y = label, d = data,method = "multinom")
 ## [1] 0.9972
-hum(y = label, d = data,method = "svm", k = 3)
+hum(y = label, d = data,method = "svm")
 ## [1] 0.9964
-hum(y = label, d = data,method = "svm", k = 3,type="C",kernel="linear",cost=4,scale=TRUE)
+hum(y = label, d = data,method = "svm",type="C",kernel="linear",cost=4,scale=TRUE)
 ## [1] 0.9972
-hum(y = label, d = data, method = "tree", k = 3)
+hum(y = label, d = data, method = "tree")
 ## [1] 0.998
 
 data <- data.matrix(iris[, 1:4])
@@ -61,25 +61,27 @@ predict.probs <- predict(fit, type = "probs")
 pp<- data.frame(predict.probs)
 # extract the probablity assessment vector
 head(pp)
-hum(y = label, d = pp, method = "prob", k = 3)
+hum(y = label, d = pp, method = "prob")
 ## [1] 0.9972
 
-rm(list=ls())
 table(mtcars$carb)
 for (i in (1:length(mtcars$carb))) {
   if (mtcars$carb[i] == 3 | mtcars$carb[i] == 6 | mtcars$carb[i] == 8) {
-    mtcars$carb[i] <- 9
+    mtcars$carb_new[i] = 9
+  }else{
+    mtcars$carb_new[i] = mtcars$carb[i]
   }
 }
 data <- data.matrix(mtcars[, c(1:10)])
-mtcars$carb <- factor(mtcars$carb, labels = c(1, 2, 3, 4))
-label <- as.numeric(mtcars$carb)
+mtcars$carb_new <- factor(mtcars$carb_new)
+label <- mtcars$carb_new
 str(mtcars)
-hum(y = label, d = data, method = "tree", k = 4,control = rpart::rpart.control(minsplit = 5))
+
+hum(y = label, d = data, method = "tree",control = rpart::rpart.control(minsplit = 5))
 ## [1] 1
-hum(y = label, d = data, method = "svm", k = 4,kernel="linear",cost=0.7,scale=TRUE)
+hum(y = label, d = data, method = "svm",kernel="linear",cost=0.7,scale=TRUE)
 ## [1] 1
-hum(y = label, d = data, method = "svm", k = 4, kernel ="radial",cost=0.7,scale=TRUE)
-## [1] 0.6217143
+hum(y = label, d = data, method = "svm", kernel ="radial",cost=0.7,scale=TRUE)
+## [1] 0.53
 }
 \keyword{ HUM }

@@ -1,15 +1,15 @@
-hum=function(y,d,method="multinom",k=3,...){
-  num=k
-  option=method
-  if(num==3){
-  #y is the tri-nomial response, i.e., a single vector taking three distinct values, can be nominal or numerical
-  #d is the continuous marker, turn out to be the probability matrix when option="prob"
+hum=function(y,d,method="multinom",...){
 
-  #x1 is position of observations from the 1st category
-  #x2 is position of observations from the 2nd category
-  #x3 is position of observations from the 3rd category
+  y_raw=y
+  y=factor(y)
+  y_levels=levels(y)
   y=as.numeric(y)
   d=data.matrix(d)
+  num=length(unique(y))
+
+  pp=pm(y=y,d=d,method=method,...)
+
+  if(num==3){
   x1=which(y==1) #return the label
   x2=which(y==2)
   x3=which(y==3)
@@ -23,52 +23,6 @@ hum=function(y,d,method="multinom",k=3,...){
   one2[,2]=1;
   one3=a;
   one3[,3]=1;
-
-  #define the id
-  if(option=="multinom"){
-    #require(nnet)
-    fit <- nnet::multinom(y~d,...)
-    predict.test.probs <- predict(fit,type='probs')
-    predict.test.df <- data.frame(predict.test.probs)
-    #extract the probablity assessment vector
-    pp=predict.test.df
-  }else if(option=="tree"){
-    #require(rpart)
-    y <- as.factor(y)
-    fit <- rpart::rpart(y~d,...)
-    predict.test.probs <- predict(fit,type='prob')
-    predict.test.df <- data.frame(predict.test.probs)
-    #extract the probablity assessment vector
-    pp=predict.test.df
-  }else if(option=="svm"){
-    #require(e1071)
-    y <- as.factor(y)
-    fit <- e1071::svm(y~d,...,probability = T)
-    predict.test <- predict(fit,d,probability = T)
-    predict.test <- attr(predict.test,"probabilities")
-    predict.test.df <- data.frame(predict.test)
-    #extract the probablity assessment vector
-    pp=predict.test.df[c("X1","X2","X3")]
-  }else if(option=="lda"){
-    #require(MASS)
-    fit <- MASS::lda(y~d,...)
-    predict.test.probs <- predict(fit,type='probs')
-    predict.test.fit <- predict(fit)
-    predict.test <- predict.test.fit$posterior
-    predict.test.df <- data.frame(predict.test)
-    #extract the probablity assessment vector
-    pp=predict.test.df
-
-  }else if(option=="prob"){
-    pp_sum <- apply(d,1,sum)
-    a <- pp_sum<0.999 | pp_sum>1.001
-    b <- sum(a)
-    if (b!=0){
-      cat("ERROR: The input value \"d\" should be a probability matrix.")
-      return(NULL)
-    }
-    pp=d
-  }
 
   #get cr value
   dd1=pp-one1;
@@ -94,15 +48,13 @@ hum=function(y,d,method="multinom",k=3,...){
   #hypervolume under ROC manifold value
   hum=cr/(length(x1)*length(x2)*length(x3));
 
-  return(hum)
+  result=list(call=match.call(),measure=hum,pm=pp,y=y_raw)
+  class(result)="mcca.hum"
+
+  return(result)
 
   }else if(num==4){
-    #y is the four-category multinomial response, must be of dimension n by 4, d is the continuous marker
-    #eg. try generating y=rmultinom(1,size=1,prob=cbind(1,exp(d%*%1),exp(d%*%2),exp(d%*%3))) need MASS
 
-    y=as.numeric(y)
-    #d=scale(d)
-    d=data.matrix(d)
     n=length(y)
     #n is the sample size
     a=matrix(0,n,4);
@@ -123,52 +75,6 @@ hum=function(y,d,method="multinom",k=3,...){
     n2=sum(y==2)
     n3=sum(y==3)
     n4=sum(y==4)
-
-    #define the id
-    if(option=="multinom"){
-      #require(nnet)
-      fit <- nnet::multinom(y~d,...)
-      predict.test.probs <- predict(fit,type='probs')
-      predict.test.df <- data.frame(predict.test.probs)
-      #extract the probablity assessment vector
-      pp=predict.test.df
-    }else if(option=="tree"){
-      #require(rpart)
-      y <- as.factor(y)
-      fit <- rpart::rpart(y~d,...)
-      predict.test.probs <- predict(fit,type='prob')
-      predict.test.df <- data.frame(predict.test.probs)
-      #extract the probablity assessment vector
-      pp=predict.test.df
-    }else if(option=="svm"){
-      #require(e1071)
-      y <- as.factor(y)
-      fit <- e1071::svm(y~d,...,probability = T)
-      predict.test <- predict(fit,d,probability = T)
-      predict.test <- attr(predict.test,"probabilities")
-      predict.test.df <- data.frame(predict.test)
-      #extract the probablity assessment vector
-      pp=predict.test.df[c("X1","X2","X3","X4")]
-    }else if(option=="lda"){
-      #require(MASS)
-      fit <- MASS::lda(y~d,...)
-      predict.test.probs <- predict(fit,type='probs')
-      predict.test.fit <- predict(fit)
-      predict.test <- predict.test.fit$posterior
-      predict.test.df <- data.frame(predict.test)
-      #extract the probablity assessment vector
-      pp=predict.test.df
-
-    }else if(option=="prob"){
-      pp_sum <- apply(d,1,sum)
-      a <- pp_sum<0.999 | pp_sum>1.001
-      b <- sum(a)
-      if (b!=0){
-        cat("ERROR: The input value \"d\" should be a probability matrix.")
-        return(NULL)
-      }
-      pp=d
-    }
 
     dd1=pp-one1;
     dd2=pp-one2;
@@ -215,16 +121,13 @@ hum=function(y,d,method="multinom",k=3,...){
     #hypervolume under ROC manifold
     hum=cr/(n1*n2*n3*n4);
 
-    return(hum)
-  }else if(num==2){
-      #y is the tri-nomial response, i.e., a single vector taking three distinct values, can be nominal or numerical
-      #d is the continuous marker, turn out to be the probability matrix when option="prob"
+    result=list(call=match.call(),measure=hum,pm=pp,y=y_raw)
+    class(result)="mcca.hum"
 
-      #x1 is position of observations from the 1st category
-      #x2 is position of observations from the 2nd category
-      #x3 is position of observations from the 3rd category
-      y=as.numeric(y)
-      d=data.matrix(d)
+    return(result)
+
+  }else if(num==2){
+
       x1=which(y==1) #return the label
       x2=which(y==2)
       n=length(y)
@@ -236,57 +139,10 @@ hum=function(y,d,method="multinom",k=3,...){
       one2=a;
       one2[,2]=1;
 
+      result=list(call=match.call(),measure=as.numeric(pROC::roc(y ~ pp[,1])$auc),pm=pp,y=y_raw)
+      class(result)="mcca.hum"
 
-      #define the id
-      if(option=="multinom"){
-        #require(nnet)
-        fit <- nnet::multinom(y~d,...)
-        predict.test.probs <- predict(fit,type='probs')
-        predict.test.df <- data.frame(predict.test.probs)
-        #extract the probablity assessment vector
-        pp=predict.test.df
-        pp <- data.frame(1-pp,pp)
-      }else if(option=="tree"){
-        #require(rpart)
-        y <- as.factor(y)
-        fit <- rpart::rpart(y~d,...)
-        predict.test.probs <- predict(fit,type='prob')
-        predict.test.df <- data.frame(predict.test.probs)
-        #extract the probablity assessment vector
-        pp=predict.test.df
-      }else if(option=="svm"){
-        #require(e1071)
-        y <- as.factor(y)
-        fit <- e1071::svm(y~d,...,probability = T)
-        predict.test <- predict(fit,d,probability = T)
-        predict.test <- attr(predict.test,"probabilities")
-        predict.test.df <- data.frame(predict.test)
-        #extract the probablity assessment vector
-        pp=predict.test.df[c("X1","X2")]
-      }else if(option=="lda"){
-        #require(MASS)
-        fit <- MASS::lda(y~d,...)
-        predict.test.probs <- predict(fit,type='probs')
-        predict.test.fit <- predict(fit)
-        predict.test <- predict.test.fit$posterior
-        predict.test.df <- data.frame(predict.test)
-        #extract the probablity assessment vector
-        pp=predict.test.df
-
-      }else if(option=="prob"){
-        pp_sum <- apply(d,1,sum)
-        a <- pp_sum<0.999 | pp_sum>1.001
-        b <- sum(a)
-        if (b!=0){
-          cat("ERROR: The input value \"d\" should be a probability matrix.")
-       #   return(NULL)
-        }
-        pp=d
-      }
-
-
-
-      return(as.numeric(pROC::roc(y ~ pp[,1])$auc))
+      return(result)
       }
 
 }

@@ -1,6 +1,7 @@
-ests <- function (y, d, acc="hum",level=0.95,method = "multinom", k = 3,B=250,balance=FALSE, ...) {
+ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=FALSE, ...) {
 
   series=numeric()
+  k=length(unique(y))
 
   if (acc=="hum"){
 
@@ -18,9 +19,9 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom", k = 3,B=250,ba
         #id <- unique(id)
       }
       if (class(d)=="numeric"){
-      series[b] <- hum(y=y[id],d=d[id],method=method,k=k,...)
+      series[b] <- hum(y=y[id],d=d[id],method=method,...)$measure
       }else {
-        series[b] <- hum(y=y[id],d=d[id,],method=method,k=k,...)
+        series[b] <- hum(y=y[id],d=d[id,],method=method,...)$measure
       }
     }
     }
@@ -28,15 +29,15 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom", k = 3,B=250,ba
       for (b in 1:B){
         id <- unlist(caret::createResample(y, times = 1))
         if (class(d)=="numeric"){
-          series[b] <- hum(y=y[id],d=d[id],method=method,k=k,...)
+          series[b] <- hum(y=y[id],d=d[id],method=method,...)$measure
         }else {
-          series[b] <- hum(y=y[id],d=d[id,],method=method,k=k,...)
+          series[b] <- hum(y=y[id],d=d[id,],method=method,...)$measure
         }
       }
     }
 
     series.sort <- sort(series)
-    return(list(value=hum(y=y,d=d,method=method,k=k,...),
+    return(list(value=hum(y=y,d=d,method=method,...)$measure,
                 se=sd(series),
                 interval=c(series.sort[ifelse(B*(0.5-level/2)<1,1,B*(0.5-level/2))],series.sort[B*(0.5+level/2)])))
   }
@@ -55,9 +56,9 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom", k = 3,B=250,ba
         #id <- unique(id)
       }
       if (class(d)=="numeric"){
-        series[b] <- pdi(y=y[id],d=d[id],method=method,k=k,...)
+        series[b] <- pdi(y=y[id],d=d[id],method=method,...)$measure
       }else {
-        series[b] <- pdi(y=y[id],d=d[id,],method=method,k=k,...)
+        series[b] <- pdi(y=y[id],d=d[id,],method=method,...)$measure
       }
     }
     }
@@ -65,14 +66,14 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom", k = 3,B=250,ba
       for (b in 1:B){
         id <- unlist(caret::createResample(y, times = 1))
         if (class(d)=="numeric"){
-          series[b] <- pdi(y=y[id],d=d[id],method=method,k=k,...)
+          series[b] <- pdi(y=y[id],d=d[id],method=method,...)$measure
         }else {
-          series[b] <- pdi(y=y[id],d=d[id,],method=method,k=k,...)
+          series[b] <- pdi(y=y[id],d=d[id,],method=method,...)$measure
         }
       }
     }
     series.sort <- sort(series)
-    return(list(value=pdi(y=y,d=d,method=method,k=k,...),
+    return(list(value=pdi(y=y,d=d,method=method,...)$measure,
                 se=sd(series),
                 interval=c(series.sort[ifelse(B*(0.5-level/2)<1,1,B*(0.5-level/2))],series.sort[B*(0.5+level/2)])))
   }
@@ -91,9 +92,9 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom", k = 3,B=250,ba
         #id <- unique(id)
       }
       if (class(d)=="numeric"){
-        series[b] <- ccp(y=y[id],d=d[id],method=method,k=k,...)
+        series[b] <- ccp(y=y[id],d=d[id],method=method,...)$measure
       }else {
-        series[b] <- ccp(y=y[id],d=d[id,],method=method,k=k,...)
+        series[b] <- ccp(y=y[id],d=d[id,],method=method,...)$measure
       }
     }
   }
@@ -101,14 +102,14 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom", k = 3,B=250,ba
     for (b in 1:B){
       id <- unlist(caret::createResample(y, times = 1))
       if (class(d)=="numeric"){
-        series[b] <- ccp(y=y[id],d=d[id],method=method,k=k,...)
+        series[b] <- ccp(y=y[id],d=d[id],method=method,...)$measure
       }else {
-        series[b] <- ccp(y=y[id],d=d[id,],method=method,k=k,...)
+        series[b] <- ccp(y=y[id],d=d[id,],method=method,...)$measure
       }
     }
   }
     series.sort <- sort(series)
-    return(list(value=ccp(y=y,d=d,method=method,k=k,...),
+    return(list(value=ccp(y=y,d=d,method=method,...)$measure,
                 se=sd(series),
                 interval=c(series.sort[ifelse(B*(0.5-level/2)<1,1,B*(0.5-level/2))],series.sort[B*(0.5+level/2)])))
   }
@@ -128,9 +129,9 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom", k = 3,B=250,ba
         #id <- unique(id)
       }
       if (class(d)=="numeric"){
-        series[b] <- rsq(y=y[id],d=d[id],method=method,k=k,...)
+        series[b] <- rsq(y=y[id],d=d[id],method=method,...)$measure
       }else {
-        series[b] <- rsq(y=y[id],d=d[id,],method=method,k=k,...)
+        series[b] <- rsq(y=y[id],d=d[id,],method=method,...)$measure
       }
     }
   }
@@ -138,14 +139,14 @@ if (balance==TRUE){
   for (b in 1:B){
     id <- unlist(caret::createResample(y, times = 1))
     if (class(d)=="numeric"){
-      series[b] <- rsq(y=y[id],d=d[id],method=method,k=k,...)
+      series[b] <- rsq(y=y[id],d=d[id],method=method,...)$measure
     }else {
-      series[b] <- rsq(y=y[id],d=d[id,],method=method,k=k,...)
+      series[b] <- rsq(y=y[id],d=d[id,],method=method,...)$measure
     }
   }
 }
     series.sort <- sort(series)
-    return(list(value=rsq(y=y,d=d,method=method,k=k,...),
+    return(list(value=rsq(y=y,d=d,method=method,...)$measure,
                 se=sd(series),
                 interval=c(series.sort[ifelse(B*(0.5-level/2)<1,1,B*(0.5-level/2))],series.sort[B*(0.5+level/2)])))
   }
