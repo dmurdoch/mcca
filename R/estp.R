@@ -13,11 +13,11 @@ estp <- function (y, m1, m2, acc = "idi", level = 0.95, method = "multinom",B=25
         id <- sample(1:nn,nn,replace = T)
         #id <- unique(id)
       }
-      if (class(m1)=="numeric" & class(m2)=="numeric"){
+      if ( "numeric" %in% class(m1) & "numeric" %in% class(m2) ){
         series[b] <- idi(y=y[id],m1=m1[id],m2=m2[id],method=method,...)
-      }else if (class(m1)=="numeric"){
+      }else if ("numeric" %in% class(m1)){
         series[b] <- idi(y=y[id],m1=m1[id],m2=m2[id,],method=method,...)
-      }else if (class(m2)=="numeric"){
+      }else if ("numeric" %in% class(m2)){
         series[b] <- idi(y=y[id],m1=m1[id,],m2=m2[id],method=method,...)
       }else {
         series[b] <- idi(y=y[id],m1=m1[id,],m2=m2[id,],method=method,...)
@@ -28,11 +28,11 @@ estp <- function (y, m1, m2, acc = "idi", level = 0.95, method = "multinom",B=25
     if (balance==TRUE){
       for (b in 1:B){
         id <- unlist(caret::createResample(y, times = 1))
-        if (class(m1)=="numeric" & class(m2)=="numeric"){
+        if ( "numeric" %in% class(m1) & "numeric" %in% class(m2) ){
           series[b] <- idi(y=y[id],m1=m1[id],m2=m2[id],method=method,...)
-        }else if (class(m1)=="numeric"){
+        }else if ("numeric" %in% class(m1)){
           series[b] <- idi(y=y[id],m1=m1[id],m2=m2[id,],method=method,...)
-        }else if (class(m2)=="numeric"){
+        }else if ("numeric" %in% class(m2)){
           series[b] <- idi(y=y[id],m1=m1[id,],m2=m2[id],method=method,...)
         }else {
           series[b] <- idi(y=y[id],m1=m1[id,],m2=m2[id,],method=method,...)
@@ -54,11 +54,11 @@ estp <- function (y, m1, m2, acc = "idi", level = 0.95, method = "multinom",B=25
         id <- sample(1:nn,nn,replace = T)
         #id <- unique(id)
       }
-      if (class(m1)=="numeric" & class(m2)=="numeric"){
+      if ( "numeric" %in% class(m1) & "numeric" %in% class(m2) ){
         series[b] <- nri(y=y[id],m1=m1[id],m2=m2[id],method=method,...)
-      }else if (class(m1)=="numeric"){
+      }else if ("numeric" %in% class(m1)){
         series[b] <- nri(y=y[id],m1=m1[id],m2=m2[id,],method=method,...)
-      }else if (class(m2)=="numeric"){
+      }else if ("numeric" %in% class(m2)){
         series[b] <- nri(y=y[id],m1=m1[id,],m2=m2[id],method=method,...)
       }else {
         series[b] <- nri(y=y[id],m1=m1[id,],m2=m2[id,],method=method,...)
@@ -68,11 +68,11 @@ estp <- function (y, m1, m2, acc = "idi", level = 0.95, method = "multinom",B=25
     if (balance==TRUE){
       for (b in 1:B){
         id <- unlist(caret::createResample(y, times = 1))
-        if (class(m1)=="numeric" & class(m2)=="numeric"){
+        if ( "numeric" %in% class(m1) & "numeric" %in% class(m2) ){
           series[b] <- nri(y=y[id],m1=m1[id],m2=m2[id],method=method,...)
-        }else if (class(m1)=="numeric"){
+        }else if ("numeric" %in% class(m1)){
           series[b] <- nri(y=y[id],m1=m1[id],m2=m2[id,],method=method,...)
-        }else if (class(m2)=="numeric"){
+        }else if ("numeric" %in% class(m2)){
           series[b] <- nri(y=y[id],m1=m1[id,],m2=m2[id],method=method,...)
         }else {
           series[b] <- nri(y=y[id],m1=m1[id,],m2=m2[id,],method=method,...)

@@ -18,7 +18,7 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=F
         id <- sample(1:nn,nn,replace = T)
         #id <- unique(id)
       }
-      if (class(d)=="numeric"){
+      if ("numeric" %in% class(d)){
       series[b] <- hum(y=y[id],d=d[id],method=method,...)$measure
       }else {
         series[b] <- hum(y=y[id],d=d[id,],method=method,...)$measure
@@ -28,7 +28,7 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=F
     if (balance==TRUE){
       for (b in 1:B){
         id <- unlist(caret::createResample(y, times = 1))
-        if (class(d)=="numeric"){
+        if ("numeric" %in% class(d)){
           series[b] <- hum(y=y[id],d=d[id],method=method,...)$measure
         }else {
           series[b] <- hum(y=y[id],d=d[id,],method=method,...)$measure
@@ -55,7 +55,7 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=F
         id <- sample(1:nn,nn,replace = T)
         #id <- unique(id)
       }
-      if (class(d)=="numeric"){
+      if ("numeric" %in% class(d)){
         series[b] <- pdi(y=y[id],d=d[id],method=method,...)$measure
       }else {
         series[b] <- pdi(y=y[id],d=d[id,],method=method,...)$measure
@@ -65,7 +65,7 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=F
     if (balance==TRUE){
       for (b in 1:B){
         id <- unlist(caret::createResample(y, times = 1))
-        if (class(d)=="numeric"){
+        if ("numeric" %in% class(d)){
           series[b] <- pdi(y=y[id],d=d[id],method=method,...)$measure
         }else {
           series[b] <- pdi(y=y[id],d=d[id,],method=method,...)$measure
@@ -91,7 +91,7 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=F
         id <- sample(1:nn,nn,replace = T)
         #id <- unique(id)
       }
-      if (class(d)=="numeric"){
+      if ("numeric" %in% class(d)){
         series[b] <- ccp(y=y[id],d=d[id],method=method,...)$measure
       }else {
         series[b] <- ccp(y=y[id],d=d[id,],method=method,...)$measure
@@ -101,7 +101,7 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=F
   if (balance==TRUE){
     for (b in 1:B){
       id <- unlist(caret::createResample(y, times = 1))
-      if (class(d)=="numeric"){
+      if ("numeric" %in% class(d)){
         series[b] <- ccp(y=y[id],d=d[id],method=method,...)$measure
       }else {
         series[b] <- ccp(y=y[id],d=d[id,],method=method,...)$measure
@@ -128,7 +128,7 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=F
         id <- sample(1:nn,nn,replace = T)
         #id <- unique(id)
       }
-      if (class(d)=="numeric"){
+      if ("numeric" %in% class(d)){
         series[b] <- rsq(y=y[id],d=d[id],method=method,...)$measure
       }else {
         series[b] <- rsq(y=y[id],d=d[id,],method=method,...)$measure
@@ -138,7 +138,7 @@ ests <- function (y, d, acc="hum",level=0.95,method = "multinom",B=250,balance=F
 if (balance==TRUE){
   for (b in 1:B){
     id <- unlist(caret::createResample(y, times = 1))
-    if (class(d)=="numeric"){
+    if ("numeric" %in% class(d)){
       series[b] <- rsq(y=y[id],d=d[id],method=method,...)$measure
     }else {
       series[b] <- rsq(y=y[id],d=d[id,],method=method,...)$measure
