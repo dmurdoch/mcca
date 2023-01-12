@@ -53,17 +53,17 @@ plot.mcca.hum=function(x,labs=levels(x$y),coords=1:3,nticks=5,filename='fig.png'
   Z=1-Z
 
   #visulization
-  rgl::rgl.surface(X,Z,Y,coords = coords,color=rainbow(10)[cut(Z, breaks = 10)],
+  rgl::surface3d(x=X,z=Z,y=Y,coords = coords,color=rainbow(10)[cut(Z, breaks = 10)],
                    back = "fill",front = "fill")
-  rgl::rgl.bbox(xlen=0, ylen=0, zlen=0)
+  rgl::bbox3d(xlen=0, ylen=0, zlen=0)
   rgl::axes3d(c('x','y','z'),color='white',nticks=nticks,family = "serif",cex = cex)
   rgl::title3d('','',labs[coords][1],labs[coords][2],labs[coords][3],color='white',
                family = "serif",cex = cex)
   rgl::view3d( theta = 210, phi = 10)
   rgl::snapshot3d(filename, fmt = "png", top = TRUE)
-  #rgl.viewpoint( theta = 1, phi = 15, fov = 60, zoom = 0, interactive = TRUE )
+  #view3d( theta = 1, phi = 15, fov = 60, zoom = 0, interactive = TRUE )
   #axes <- rbind(c(0.5, 0, 0), c(0, 0.5, 0),
   #              c(0, 0, 0.5))
-  #rgl::rgl.texts(axes, text = levels(y_raw)[coords], color = "white",
+  #rgl::text3d(axes, text = levels(y_raw)[coords], color = "white",
   #               adj = c(-1, 0), size = 4)
 }
